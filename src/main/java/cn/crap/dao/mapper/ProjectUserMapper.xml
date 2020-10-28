@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.crap.dao.mybatis.ProjectUserDao">
+  <resultMap id="resultMap" type="cn.crap.model.ProjectUserPO">
+      <id column="id" property="id"/>
+      <result column="createTime" property="createTime"/>
+      <result column="userName" property="userName"/>
+      <result column="sequence" property="sequence"/>
+      <result column="userEmail" property="userEmail"/>
+      <result column="projectId" property="projectId"/>
+      <result column="userId" property="userId"/>
+      <result column="permission" property="permission"/>
+      <result column="status" property="status"/>
+      <result column="type" property="type"/>
+      <result column="projectName" property="projectName"/>
+      <result column="projectUniKey" property="projectUniKey"/>
+  </resultMap>
+
+  <!-- 基本的字段，供其他查询引用-->
+  <sql id="baseColumn">
+        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status,type,projectName,projectUniKey
+  </sql>
+  <sql id="querySql">
+    <where>
+      <if test="query.projectId != null">
+        and projectId=#{query.projectId}
+      </if>
+      <if test="query.projectUniKey != null">
+        and projectUniKey=#{query.projectUniKey}
+      </if>
+      <if test="query.userId != null">
+        and userId=#{query.userId}
+      </if>
+      <if test="query.type != null">
+        and type=#{query.type}
+      </if>
+    </where>
+  </sql>
+
+  <!-- 新增 -->
+  <insert id="insert" parameterType="cn.crap.model.ProjectUserPO">
+    insert into project_user (
+      <include refid="baseColumn"/>
+    )
+    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status},#{type},#{projectName},#{projectUniKey})
+  </insert>
+
+  <!-- 删除 -->
+  <delete id="delete">
+        delete from project_user where id=#{id}
+    </delete>
+
+  <delete id="deleteByProjectId">
+        delete from project_user where projectId=#{projectId}
+    </delete>
+
+
+  <!-- 更新 -->
+  <update id="update" parameterType="cn.crap.model.ProjectUserPO">
+    update project_user
+    <set>
+      <if test="userName != null">
+        userName = #{userName},
+      </if>
+      <if test="permission != null">
+        permission = #{permission},
+      </if>
+      <if test="userEmail != null">
+        userEmail = #{userEmail},
+      </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+
+  <!-- 更新 -->
+  <update id="batchUpdateByProjectId" parameterType="cn.crap.model.ProjectUserPO">
+    update project_user set sequence=#{sequence}, projectName=#{projectName}
+    where projectId=#{projectId}
+  </update>
+
+
+  <!-- 查询 -->
+  <select id="select" resultMap="resultMap">
+    select <include refid="baseColumn"/>
+    from project_user
+    <include refid="querySql"/>
+    order by sequence desc
+    <if test="query.start != null and query.pageSize != null">
+      limit #{query.start},#{query.pageSize}
+    </if>
+  </select>
+
+
+
+  <!-- 查询 -->
+  <select id="get" resultMap="resultMap">
+    select
+    <include refid="baseColumn"/>
+    from project_user
+    where id=#{id}
+  </select>
+
+
+  <!-- 查询总数 -->
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from project_user
+    <include refid="querySql"/>
+  </select>
+
+</mapper>

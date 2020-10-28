@@ -1,0 +1,215 @@
+/**
+后端css样式
+ */
+body{
+    min-width: 1000px;
+    height: auto!important;
+}
+a.btn.disabled{
+    opacity: 0.5;
+}
+.table-no-border td{
+    border-top: 0px!important;
+    text-align: left;
+}
+.table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 10px;
+    border-top: 1px dashed #eeeeee;
+}
+.table-bordered > thead > tr > td {
+    border-bottom-width: 1px!important;
+}
+
+.table-no-border td input, .table-no-border td select, .table-no-border td textarea{
+    border: 1px solid #e0e0e0;
+}
+.table-bordered td input, .table-bordered td select, .table-bordered td textarea{
+    border: 1px solid #e0e0e0;
+}
+
+.input-no-border > tbody > tr{
+    height: 38px;
+    line-height: 38px;
+}
+.input-no-border > tbody > tr > td{
+    padding: 2px!important;
+}
+.input-no-border input{
+    border: 0px!important;
+    font-size: 14px;
+    border-radius: 0px;
+}
+.input-no-border select{
+    border: 0px!important;
+    font-size: 12px;
+    border-radius: 0px;
+}
+
+.text {
+    border: 1px solid #ccc;
+    height: 1000px;
+}
+.navbar-brand{
+    width: 51px;
+    padding: 10px;
+}
+.navbar-brand img{
+    height: 30px;
+    width: 30px;
+}
+.admin-nav{
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,.1);
+}
+.menu_a,.left-menu a{
+    text-align: left;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    padding-left:15px;
+    border-bottom: 1px solid #eaeaea;
+    color: #000000;
+    width: 100%;
+}
+.left-menu:hover{
+    z-index: 100;
+}
+.menu_a:hover,.left-menu a:hover{
+    margin-top:-1px;
+    margin-bottom:-1px;
+    height:52px;
+    line-height: 52px;
+}
+.menu_b{
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    padding-left:15px;
+    padding-right:15px;
+    overflow:hidden;
+    border-bottom: 1px solid #eaeaea;
+    width: 100%;
+    color: #555555;
+    font-size: 13px;
+}
+.project-menu{
+    text-align: left;
+    display: block;
+    float: left;
+    cursor: pointer;
+    width: 160px;
+    background-color: #f9fafc;
+    border: 1px solid #eeeeee;
+    color:#555555;
+    margin-top:-1px;
+    margin-left:-1px;
+    line-height: 40px;
+    font-size: 14px;
+    padding-left: 10px;
+    overflow: hidden;
+}
+
+.left-menu {
+    width: 250px;
+    height: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+    background-color: #bbbbbb;
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+}
+.left-menu .tooltip{
+    z-index: 1000;
+    position: fixed!important;
+}
+.hover-adorn:hover,.active-adorn{
+    color: #ffffff!important;
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: none;
+}
+.hover-main:hover,.active-main{
+    cursor: pointer;border:0px!important;
+    text-decoration: none;
+}
+.main-nav{
+    padding: 0px;
+    font-size: 16px;
+    background-color: #ffffff;
+    height: 55px;
+    padding-top: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    position: fixed;
+    z-index: 100;
+    right:0px;
+    left:250px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+/******* markdown ******/
+.editormd-menu > li > a > .fa {
+    padding: 2px!important;
+}
+.editormd-menu .fa {
+    font: normal normal normal 12px/1 FontAwesome;
+}
+.editormd-menu > li > a {
+    min-width: 20px!important;
+}
+.editormd-menu > li {
+    padding: 2px 1px!important;
+}
+.editormd-toolbar-container {
+    min-height: 30px!important;
+}
+/** 行号显示不完全 **/
+.CodeMirror-linenumber {
+    word-break: keep-all!important;
+    word-wrap: normal!important;
+}
+
+/*** editor **********/
+.info-bl-3{
+    border-left:3px solid #5bc0de;
+}
+.warning-bl-3{
+    border-left:3px solid #f0ad4e;
+}
+.success-bl-3{
+    border-left:3px solid #5cb85c;
+}
+.editor-table{
+    margin-bottom: 0px!important;
+}
+.editor-table td{
+    border: 0px!important;
+    border-top: 1px solid #ddd!important;
+    border-bottom: 1px solid #ddd!important;
+    border-left: 1px dashed #e5e5e5!important;
+    background:#ffffff;
+}
+/******** bug 管理系统 ********/
+.bug-filter div{
+    float:left;
+    padding: 0px 5px 0px 5px;
+    cursor: pointer;
+    color: #000000;
+    margin-right:10px;
+    height: 25px;
+}
+.bug-filter span{
+    height: 25px;
+    line-height: 25px;
+}
+.bug-filter .iconfont{
+    padding-left: 5px;
+    margin-left: 5px;
+    border-left: 1px solid #dddddd;
+    height: 25px;
+    padding-top: 3px;
+    margin-top:-1px;
+}

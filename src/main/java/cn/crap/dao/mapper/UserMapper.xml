@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.crap.dao.mybatis.UserDao">
+  <resultMap id="resultMap" type="cn.crap.model.UserPO">
+    <id column="id" property="id"/>
+    <result column="createTime" property="createTime"/>
+    <result column="userName" property="userName"/>
+    <result column="email" property="email"/>
+    <result column="thirdlyId" property="thirdlyId"/>
+    <result column="type" property="type"/>
+    <result column="passwordSalt" property="passwordSalt"/>
+    <result column="authName" property="authName"/>
+    <result column="avatarUrl" property="avatarUrl"/>
+    <result column="attributes" property="attributes"/>
+    <result column="roleName" property="roleName"/>
+    <result column="loginType" property="loginType"/>
+    <result column="roleId" property="roleId"/>
+    <result column="trueName" property="trueName"/>
+    <result column="password" property="password"/>
+    <result column="auth" property="auth"/>
+    <result column="sequence" property="sequence"/>
+    <result column="status" property="status"/>
+    <result column="loginTime" property="loginTime"/>
+
+  </resultMap>
+
+  <!-- 基本的字段，供其他查询引用-->
+  <sql id="baseColumn">
+        id,createTime,userName,email,thirdlyId,type,passwordSalt,authName,avatarUrl,attributes,roleName,loginType,roleId,trueName,password,auth,sequence,status,loginTime
+  </sql>
+
+
+  <sql id="querySql">
+    <where>
+      <if test="query.status != null">
+        and status=#{query.status}
+      </if>
+      <if test="query.thirdlyId != null">
+        and thirdlyId=#{query.thirdlyId}
+      </if>
+      <if test="query.equalEmail != null">
+        and email=#{query.equalEmail}
+      </if>
+      <if test="query.equalUserName != null">
+        and userName=#{query.equalUserName}
+      </if>
+      <if test="query.loginType != null">
+        and loginType=#{query.loginType}
+      </if>
+      <if test="query.notEqualId != null">
+        and id &lt;&gt; #{query.notEqualId}
+      </if>
+      <if test="query.email != null">
+        and email LIKE CONCAT('%',#{query.email},'%')
+      </if>
+      <if test="query.userName != null">
+        and userName LIKE CONCAT('%',#{query.userName},'%')
+      </if>
+      <if test="query.trueName != null">
+        and trueName LIKE CONCAT('%',#{query.trueName},'%')
+      </if>
+      <if test="query.orEmail != null">
+        or email LIKE CONCAT('%',#{query.orEmail},'%')
+      </if>
+      <if test="query.orUserName != null">
+        or userName LIKE CONCAT('%',#{query.orUserName},'%')
+      </if>
+      <if test="query.orTrueName != null">
+        or trueName LIKE CONCAT('%',#{query.orTrueName},'%')
+      </if>
+    </where>
+  </sql>
+
+  <!-- 新增 -->
+  <insert id="insert" parameterType="cn.crap.model.UserPO">
+    insert into user (
+    <include refid="baseColumn"/>
+    )
+    values (#{id},#{createTime},#{userName},#{email},#{thirdlyId},#{type},#{passwordSalt},#{authName},#{avatarUrl},#{attributes},#{roleName},#{loginType},#{roleId},#{trueName},#{password},#{auth},#{sequence},#{status},#{loginTime})  </insert>
+
+  <!-- 删除 -->
+  <delete id="delete">
+        delete from user where id=#{id}
+    </delete>
+
+  <!-- 更新 -->
+  <update id="update" parameterType="cn.crap.model.UserPO">
+    update user
+    <set>
+      <if test="userName != null">
+        userName = #{userName},
+      </if>
+      <if test="email != null">
+        email = #{email},
+      </if>
+      <if test="thirdlyId != null">
+        thirdlyId = #{thirdlyId},
+      </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
+      <if test="authName != null">
+        authName = #{authName},
+      </if>
+      <if test="avatarUrl != null">
+        avatarUrl = #{avatarUrl},
+      </if>
+      <if test="attributes != null">
+        attributes = #{attributes},
+      </if>
+      <if test="roleName != null">
+        roleName = #{roleName},
+      </if>
+      <if test="roleId != null">
+        roleId = #{roleId},
+      </if>
+      <if test="trueName != null">
+        trueName = #{trueName},
+      </if>
+      <if test="password != null">
+        password = #{password},
+      </if>
+      <if test="auth != null">
+        auth = #{auth},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="passwordSalt != null">
+        passwordSalt = #{passwordSalt},
+      </if>
+      <if test="loginTime != null">
+        loginTime = NOW(),
+      </if>
+      <if test="loginType != null">
+        loginType=#{loginType},
+      </if>
+
+    </set>
+    where id=#{id}
+  </update>
+
+
+  <!-- 查询 -->
+  <select id="select" resultMap="resultMap">
+    select <include refid="baseColumn"/>
+    from user
+    <include refid="querySql"/>
+    <if test="query.sort != null">
+      order by ${query.sort}
+    </if>
+    <if test="query.start != null and query.pageSize != null">
+      limit #{query.start},#{query.pageSize}
+    </if>
+  </select>
+
+
+  <!-- 查询 -->
+  <select id="get" resultMap="resultMap">
+    select
+    <include refid="baseColumn"/>
+    from user
+    where id=#{id}
+  </select>
+
+
+  <!-- 查询总数 -->
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from user
+    <include refid="querySql"/>
+  </select>
+
+</mapper>

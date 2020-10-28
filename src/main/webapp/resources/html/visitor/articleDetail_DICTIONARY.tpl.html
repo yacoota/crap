@@ -1,0 +1,27 @@
+<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="articleDetailCtrl">
+<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
+<div class="col-xs-6 fl p3 pl10 pr10 f14 fb mt10 mb20 adorn-bl-3">{{article.name}}</div>
+	<div class="col-xs-12 p0 pb20 f14 mt0 mb20 dashed-b">
+  		{{article.brief}}
+	</div>
+	<table class="table table-bordered f12 C555 mb5">
+			<tr class="adorn-color BGEEE">
+				<td class="w200">字段</td>
+				<td  class="w150">类型</td>
+				<td  class="w50">空</td>
+				<td  class="w150">默认</td>
+				<td  class="w50">标识</td>
+				<td  class="w200">注释</td>
+			</tr>
+			<tr ng-repeat="item in dictionary"  class="{{item.flag|getClass}}">
+				<td>{{item.name}}</td>
+				<td>{{item.type}}</td>
+				<td>{{item.notNull=='true'?'是':'否'}}</td>
+				<td>{{item.def}}</td>
+				<td>{{item.flag|toChinese}}</td>
+				<td>{{item.remark}}</td>
+			</tr>
+	</table>
+</div>
+<div class="cb"></div>
+

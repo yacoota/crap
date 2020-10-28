@@ -1,0 +1,102 @@
+<div class="col-xs-12 p0" ng-init="queryArticleList()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+
+            <a type="button" class="btn btn-default" id="refresh" ng-click="queryArticleList(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+
+            <a type="button" ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addArticle')]"
+               ng-href="#/user/article/edit?id=NULL&dataType=article&menu_b=menu_article&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
+                <i class="iconfont mt-3">&#xe604;&nbsp;新增文档</i>
+            </a>
+            <a type="button"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('delArticle')]"
+               ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的文档？')">
+                <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除
+            </a>
+        </div>
+
+        <div class="form-group w200 fl mr10 mb0" ng-if="$stateParams.type=='ARTICLE'">
+            <label class="sr-only">类目</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg CFFF b0 f12">类目</div>
+                <input type="text" autocomplete="off" class="form-control input-sm dis-in-blo w120 bl0" readonly placeholder="点击输入框选择类目"
+                       id="searchCategory" ng-value="$stateParams.category"
+                       ng-focus="loadPickByName('iwidth=150|iheight=170|tag=searchCategory|code=CATEGORY|params=&key='+$stateParams.moduleId +'|def=' + $stateParams.category,$event);">
+            </div>
+        </div>
+
+        <div class="form-group w200 fl mr10 mb0">
+            <label class="sr-only">名称</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg b0 CFFF f12">名称</div>
+                <input type="text" autocomplete="off" class="form-control input-sm dis-in-blo w120 bl0" placeholder="名称" id="searchName"
+                       ng-value="$stateParams.name">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="queryArticleList(1, true);">
+            <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
+        </button>
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+        <div class="BGFFF p15">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <td class="w50" ng-click="stopPropagation($event);">
+                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',articles);">
+                    </td>
+                    <td class="min-w300"><span ng-if="isSupperAdmin(null)">状态 / </span>是否可评论 / 标题 / 简介</td>
+                    <td>创建时间</td>
+                    <td class="w200">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in articles">
+                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
+                    <td class="cursor" ng-click="go('user/article/detail?pageName=文档详情&id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
+                        item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
+                        <div class="C000 f14">
+                            <span ng-if="isSupperAdmin(null)" ng-class="{true:'badge f12 fn adorn-bg o5', false:'badge f12 fn main-bg o5'}[item.status==2]">{{item.statusName}}</span>
+                            <span ng-class="{true:'badge f12 fn main-bg o5', false:'badge f12 fn BG555 o5'}[item.canComment==1]">{{item.canCommentName}}</span>
+                            {{item.name| cut:true:40:' ...'}}
+                        </div>
+                        <div class="C999 f10 mt5" ng-if="item.brief">
+                            {{item.brief| cut:true:60:' ...'}}
+                        </div>
+                    </td>
+                    <td>{{item.createTimeStr}}</td>
+                    <td class="f12">
+                        <a ng-class="{true: 'mr5 cursor btn btn-xs btn-default', false:'mr5 btn btn-xs btn-default disabled'}[isProjectUser('modArticle')]"
+                           ng-href="#/user/article/edit?pageName=编辑文档&dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
+                            <i class="iconfont f12">&#xe69e;</i>
+                        </a>
+                        <a class="mr5 cursor btn btn-xs btn-main" target="_blank"
+                           ng-href="index.do#/article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}">
+                            <i class="iconfont f12">&#xe6e6;</i>
+                        </a>
+
+                        <a ng-class="{true: 'mr10 cursor btn btn-xs btn-danger', false:'mr10 btn btn-xs btn-danger disabled'}[isProjectUser('delArticle')]"
+                           ng-click="del('user/article/delete.do?id='+item.id,item.name);">
+                            <i class="iconfont f12">&#xe69d;</i>
+                        </a>
+
+                        <a class="main-color mr10 cursor"
+                           ng-href="#/user/comment/list?dataType=article&type=ARTICLE&menu_b=menu_article&projectId={{item.projectId}}&targetId={{item.id}}&menu_a=menu-project&moduleId={{item.moduleId}}">
+                            评论列表
+                        </a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <div ui-view="page" ng-init="callBackMethod = 'queryArticleList'; modelKey='articles'"></div>
+        </div>
+    </div>
+</div>
+<div class="cb"></div>
+

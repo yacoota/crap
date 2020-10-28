@@ -1,0 +1,22 @@
+<div class="w200 fl h BGFFF f13 ofy-s pb100 fixed l50 main-bl-1">
+	<div class="w h50 fw500 lh50 f14 pl10 BGF5">项目管理</div>
+
+    <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_create_join']"
+       ng-href="{{'my-project'|getUrl}}">
+        我的项目
+    </a>
+
+	<a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_create']"
+	   ng-href="{{'my-create-project'|getUrl}}">
+        我创建的项目
+    </a>
+
+	<a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_join']"
+	   ng-href="{{'my-join-project'|getUrl}}">
+        我加入的项目
+    </a>
+
+    <a  ng-if="isAdmin(null, 'PROJECT')"
+        href="{{'all-project'|getUrl}}"
+       ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_all_project']">所有用户项目</a>
+</div>

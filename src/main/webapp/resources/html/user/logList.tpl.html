@@ -1,0 +1,63 @@
+<div class="p0 col-xs-12"  ng-init="queryLogList()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+            <a type="button" class="btn btn-default" id="refresh" ng-click="queryLogList(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+            <!--
+        <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
+            <button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="queryLogList(1);">
+                <i class="iconfont">&#xe6ac;</i>&nbsp;查询
+            </button>
+            <div class="form-group w200 fr">
+                <label class="sr-only">类型</label>
+                <div class="input-group">
+                    <div class="input-group-addon">类型</div>
+                    <input type="text" autocomplete="off" class="form-control dis-in-blo w120" readonly placeholder="点击输入框选择类目"
+                           id="modelName"
+                           ng-focus="loadPickByName('iwidth=200|iheight=220|tag=modelName|code=MODEL_NAME',$event);">
+                </div>
+            </div>
+            <div class="cb"></div>
+        </div>
+        -->
+        </div>
+        <div class="fl f14 C999 pt5"><i class="iconfont mt-3 adorn-color">&#xe6b6;&nbsp;</i>日志最长保留30天</div>
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+        <div class="BGFFF p15">
+            <table class="table table-hover table-striped f13">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <td class="tc w200">类型</td>
+                    <td class="tc">备注</td>
+                    <td class="tc">操作</td>
+                    <td class="tc">操作人</td>
+                    <td class="tc">时间</td>
+                    <td class="w200 tc">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="cursor" ng-repeat="item in logs">
+                    <td class="tc">{{item.modelName}}</td>
+                    <td class="tc" title="{{item.remark}}">{{item.remark| cut:true:50:' ...'}}</td>
+                    <td class="tc">{{item.type}}</td>
+                    <td class="tc">{{item.updateBy}}</td>
+                    <td class="tc">{{item.createTimeStr}}</td>
+                    <td class="tc">
+                        <a class="f12 text-primary mr10 cursor"
+                           ng-click="detail('查看【'+item.remark+'】',900,'user/log/detail.do?id='+item.id, '', logDetailFormat)">
+                            <i class="iconfont f12">&#xe6e6;&nbsp;查看</i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div ui-view="page" ng-init="callBackMethod = 'queryLogList';  modelKey='logs';"></div>
+        </div>
+    </div>
+</div>
+<div class="cb"></div>
+

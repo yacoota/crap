@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.crap.dao.mybatis.ModuleDao">
+  <resultMap id="resultMap" type="cn.crap.model.ModulePO">
+    <id column="id" property="id"/>
+
+    <result column="createTime" property="createTime"/>
+    <result column="category" property="category"/>
+    <result column="name" property="name"/>
+    <result column="uniKey" property="uniKey"/>
+    <result column="url" property="url"/>
+    <result column="remark" property="remark"/>
+    <result column="versionNum" property="versionNum"/>
+    <result column="projectId" property="projectId"/>
+    <result column="userId" property="userId"/>
+    <result column="templateId" property="templateId"/>
+    <result column="sequence" property="sequence"/>
+    <result column="status" property="status"/>
+    <result column="canDelete" property="canDelete"/>
+  </resultMap>
+
+  <!-- 基本的字段，供其他查询引用-->
+  <sql id="baseColumn">
+        id,createTime,category,name,uniKey,url,remark,projectId,userId,versionNum,templateId,sequence,status,canDelete
+  </sql>
+
+  <sql id="querySql">
+    <where>
+      <if test="query.projectId != null">
+        and projectId=#{query.projectId}
+      </if>
+      <if test="query.userId != null">
+        and userId=#{query.userId}
+      </if>
+      <if test="query.uniKey != null">
+        and uniKey=#{query.uniKey}
+      </if>
+      <if test="query.status != null">
+        and status=#{query.status}
+      </if>
+      <if test="query.name != null">
+        and name LIKE CONCAT('%',#{query.name},'%')
+      </if>
+    </where>
+  </sql>
+
+  <!-- 新增 -->
+  <insert id="insert" parameterType="cn.crap.model.ModulePO">
+    insert into module (
+    <include refid="baseColumn"/>
+    )
+    values (#{id},NOW(),#{category},#{name},#{uniKey},#{url},#{remark},#{projectId},#{userId},#{versionNum},#{templateId},#{sequence},#{status},#{canDelete})
+
+  </insert>
+
+  <!-- 删除 -->
+  <delete id="delete">
+        delete from module where id=#{id}
+    </delete>
+
+
+  <!-- 更新 -->
+  <update id="update" parameterType="cn.crap.model.ModulePO">
+    update module
+    <set>
+      <if test="category != null">
+        category = #{category},
+      </if>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="url != null">
+        url = #{url},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="projectId != null">
+        projectId = #{projectId},
+      </if>
+      <if test="versionNum != null">
+        versionNum = #{versionNum},
+      </if>
+      <if test="versionNum == null">
+        versionNum = versionNum + 1,
+      </if>
+      <if test="templateId != null">
+        templateId = #{templateId},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="canDelete != null">
+        canDelete = #{canDelete},
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+
+
+  <!-- 查询 -->
+  <select id="select" resultMap="resultMap">
+    select <include refid="baseColumn"/>
+    from module
+    <include refid="querySql"/>
+    <if test="query.sort != null">
+      order by ${query.sort}
+    </if>
+
+    <if test="query.queryAll == null or query.queryAll == false">
+      <if test="query.start != null and query.pageSize != null">
+        limit #{query.start},#{query.pageSize}
+      </if>
+    </if>
+
+  </select>
+
+
+  <!-- 查询 -->
+  <select id="get" resultMap="resultMap">
+    select
+    <include refid="baseColumn"/>
+    from module
+    where id=#{id}
+  </select>
+
+
+  <!-- 查询总数 -->
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from module
+    <include refid="querySql"/>
+  </select>
+
+</mapper>

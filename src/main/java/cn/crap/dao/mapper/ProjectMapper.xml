@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.crap.dao.mybatis.ProjectDao">
+  <resultMap id="resultMap" type="cn.crap.model.ProjectPO">
+    <id column="id" property="id"/>
+    <result column="type" property="type"/>
+    <result column="password" property="password"/>
+    <result column="luceneSearch" property="luceneSearch"/>
+    <result column="remark" property="remark"/>
+    <result column="createTime" property="createTime"/>
+    <result column="cover" property="cover"/>
+    <result column="name" property="name"/>
+    <result column="userId" property="userId"/>
+    <result column="uniKey" property="uniKey"/>
+    <result column="sequence" property="sequence"/>
+    <result column="status" property="status"/>
+  </resultMap>
+
+  <!-- 基本的字段，供其他查询引用-->
+  <sql id="baseColumn">
+        id,type,password,luceneSearch,remark,createTime,cover,name,userId,uniKey,sequence,status
+  </sql>
+
+  <sql id="querySql">
+    <where>
+      <if test="query.userId != null">
+        and userId=#{query.userId}
+      </if>
+      <if test="query.status != null">
+        and status=#{query.status}
+      </if>
+      <if test="query.name != null">
+        and name LIKE CONCAT('%',#{query.name},'%')
+      </if>
+      <if test="query.uniKey != null">
+        and uniKey=#{query.uniKey}
+      </if>
+      <if test="query.type != null">
+        and type=#{query.type}
+      </if>
+    </where>
+  </sql>
+
+  <!-- 新增 -->
+  <insert id="insert" parameterType="cn.crap.model.ProjectPO">
+    insert into project (
+    <include refid="baseColumn"/>
+    )
+    values (#{id},#{type},#{password},#{luceneSearch},#{remark},NOW(),#{cover},#{name},#{userId},#{uniKey},#{sequence},#{status})
+  </insert>
+
+  <!-- 删除 -->
+  <delete id="delete">
+        delete from project where id=#{id}
+    </delete>
+
+  <!-- 更新 -->
+  <update id="update" parameterType="cn.crap.model.ProjectPO">
+    update project
+    <set>
+      <if test="type != null">
+        type = #{type},
+      </if>
+      <if test="password != null">
+        password = #{password},
+      </if>
+      <if test="luceneSearch != null">
+        luceneSearch = #{luceneSearch},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="cover != null">
+        cover = #{cover},
+      </if>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+
+
+  <!-- 查询 -->
+  <select id="select" resultMap="resultMap">
+    select <include refid="baseColumn"/>
+    from project
+    <include refid="querySql"/>
+    <if test="query.sort != null">
+      order by ${query.sort}
+    </if>
+    <if test="query.start != null and query.pageSize != null">
+      limit #{query.start},#{query.pageSize}
+    </if>
+  </select>
+
+
+  <!-- 查询 -->
+  <select id="get" resultMap="resultMap">
+    select
+    <include refid="baseColumn"/>
+    from project
+    where id=#{id}
+  </select>
+
+
+  <!-- 查询总数 -->
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from project
+    <include refid="querySql"/>
+  </select>
+
+</mapper>

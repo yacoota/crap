@@ -1,0 +1,41 @@
+<div class="r0 p20 pt10 col-xs-12" ng-controller="visitorModuleCtrl">
+	<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
+	<div class="col-xs-12 p3 pl10 pr10 mr10 f16 mt10 mb20 adorn-bl-3">
+		全部模块
+	</div>
+	
+	<div ng-if="moduleList.length==0" class="col-xs-12 tc mt10 mb10 C999">
+			<i class="iconfont f20 mt-5 mr10">&#xe69c;</i>抱歉，没有模块
+	</div>
+	
+	<div ng-repeat="item in moduleList" class="dashed-t col-xs-12 pl0"  ng-if="moduleList.length>0">
+		<a class="p10 pl0 f14 dis w C000 no_unl cursor" ng-href="#/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}">{{item.name}}</a>
+		<div class ="f12 C555" ng-bind="item.remark|cut:true:100:' ...'"></div>
+		<div class="tr C999 f12 p10">
+			<a class="f12 text-primary mr5 cursor" ng-href="#/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}">
+						<i class="iconfont f12">&#xe648; 接口</i>
+					</a>
+					
+					<a class="f12 text-primary mr5 cursor" ng-href="#/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=ARTICLE">
+						<i class="iconfont f12">&#xe6a2; 文档</i>
+					</a>
+					
+					<a class="f12 text-primary mr5 cursor" ng-href="#/source/list?projectId={{item.projectId}}&id={{item.id}}">
+						<i class="iconfont f12">&#xe6c0; 文件</i>
+					</a>
+					<a class="f12 text-primary mr5 cursor" ng-href="#/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=DICTIONARY">
+						<i class="iconfont f12">&#xe70c; 数据库表</i>
+					</a>
+					
+					<a class="f12 text-primary mr5 cursor" ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}">
+						<i class="iconfont f12">&#xe714; PDF</i>
+					</a>
+		</div>
+	</div>
+
+	<div class="cb"></div>
+	<div ui-view="page" ng-if="moduleList.length>0"></div>
+
+</div>
+<div class="cb"></div>
+

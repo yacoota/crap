@@ -1,0 +1,133 @@
+﻿<div class="p15 col-xs-12" ng-init="getProjectDetail()">
+	<div class="col-xs-12 BGFFF p20">
+		<!-- 版本 -->
+		<div class="fb main-color fw500 f20" >
+            <span ng-bind="projectDetail.name"></span>
+            <a ng-class="{true: 'cursor btn btn-adorn btn-xs r20', false:'btn btn-adorn btn-xs r20 disabled'}[isProjectUser('myData')]"
+               ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
+                <i class="iconfont f12">&#xe69e;编辑</i>
+            </a>
+        </div>
+
+        <div class="C999 lh26 p20 light-bg mt10 f12">
+				项目类型：<span class="C000" ng-bind="projectDetail.statusName"></span>
+				<span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
+					title="「普通项目/推荐项目：系统管理员可以将项目修改为推荐项目，推荐项目将出现在首页列表中，私有项目即使被设置为推荐项目，其他用户也无法查看项目内容」">
+					<i class="iconfont adorn-color">&#xe6a3;</i>
+				</span>
+
+				是否公开：<span class="C000" ng-bind="projectDetail.typeName"></span>
+				<span class="p0 f14 cursor mr20" onclick="tooltip('type-tip')" id="type-tip" data-toggle="tooltip" data-placement="right"
+					  title="「私有项目不开放搜索，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可通过项目地址直接访问」">
+					<i class="iconfont adorn-color">&#xe6a3;</i>
+				</span>
+
+				是否开放搜索：<span class="C000" ng-bind="projectDetail.luceneSearchName"></span>
+				<span class="p0 f14 cursor mr20" onclick="tooltip('lucene-tip')" id="lucene-tip" data-toggle="tooltip" data-placement="right"
+					  title="「私有项目不会开放搜索，只能登录后在项目下进行搜索，公开项目且设置为开放搜索才能通过站内搜索查询项目」">
+					<i class="iconfont adorn-color">&#xe6a3;</i>
+				</span>
+				<br/>
+				访问方式：<span class="C000 mr20" ng-bind="projectDetail.visitWay"></span><br>
+                创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span>
+                创建人：<span class="C000 mr20" ng-bind="projectDetail.userName"></span><br>
+                <span ng-if="projectDetail.inviteUrl != null">
+                    <span class="adorn-color">邀请加入：</span>邀请码2小时有效，邀请后将默认拥有除删除外的其他权限，可进入【项目成员】处修改权限<br/>
+                    <span class="C999 pl50 f12" ng-bind="projectDetail.inviteUrl"></span>
+                </span>
+                <span ng-if="projectDetail.inviteUrl == null">
+                    退出项目：<a class="adorn-color" target="_self" ng-href="user/projectUser/quit.do?projectId={{projectDetail.id}}">点击退出</a>
+                </span>
+
+		</div>
+
+		<div class="fw500 cb f14 mt20">项目统计</div>
+		<div class="C999 p0 mt10">
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/module/list?pageName=模块&dataType=interface&menu_a=menu-project&menu_b=menu_module&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe83b;&nbsp;</i>模块<br>
+                <span class="f12 C999">模块总数：{{projectMoreInfo.moduleNum}}</span>
+            </a>
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/error/list?pageName=状态码&dataType=error&menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe6b7;&nbsp;</i>状态码<br>
+                <span class="f12 C999">状态码总数：{{projectMoreInfo.errorNum}}</span>
+            </a>
+            <a class="project-menu lh20 p10" ng-if="isProjectUser('myData')"
+               ng-href="#/user/projectUser/list?pageName=项目成员&menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+            <i class="iconfont mt-3">&#xe6b8;&nbsp;</i>项目成员<br>
+                <span class="f12 C999">项目成员总数：{{projectMoreInfo.projectUserNum}}</span>
+            </a>
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/projectMeta/list?pageName=项目环境&type=1&dataType=env&menu_a=menu-project&menu_b=menu_main&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}&moduleId={{$stateParams.moduleId}}">
+                <i class="iconfont mt-3">&#xe619;&nbsp;</i>环境配置<br>
+                <span class="f12 C999">配置总数：{{projectMoreInfo.envNum}}</span>
+            </a>
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/interface/list?pageName=接口&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe648;&nbsp;</i>接口<br>
+                <span class="f12 C999">接口总数：{{projectMoreInfo.interfaceNum}}</span>
+            </a>
+
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/article/list?pageName=文档&dataType=article&menu_a=menu-project&menu_b=menu_article&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe6a2;&nbsp;</i>文档<br>
+                <span class="f12 C999">文档总数：{{projectMoreInfo.articleNum}}</span>
+            </a>
+
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/dictionary/list?pageName=数据库表&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe70c;&nbsp;</i>数据库表<br>
+                <span class="f12 C999">数据库表总数：{{projectMoreInfo.dictionaryNum}}</span>
+            </a>
+
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/source/list?pageName=文件&dataType=source&menu_a=menu-project&menu_b=menu_source&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe6c0;&nbsp;</i>文件<br>
+                <span class="f12 C999">文件总数：{{projectMoreInfo.sourceNum}}</span>
+            </a>
+        </div>
+        <div class="cb"></div>
+        <div class="fw500 cb f14 mt20">项目管理</div>
+        <div class="C999 p0 mt10">
+
+			<a class="project-menu btn" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
+                <i class="iconfont adorn-main mt-3">&#xe87b;&nbsp;</i>项目主页
+            </a>
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
+               ng-href="#/user/log/list?pageName=日志&dataType=interface&menu_a=menu-project&menu_b=menu_main&identy={{projectDetail.id}}&projectId={{projectDetail.id}}&projectName={{projectDetail.name}}">
+                <i class="iconfont">&#xe6bb;&nbsp;</i>日志
+            </a>
+
+            <a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
+               ng-click="detail('【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();">
+                <i class="iconfont">&#xe640;静态化</i>
+            </a>
+
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
+               ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
+				<span ng-if="projectDetail.type == 2 && projectDetail.luceneSearch == 1">
+					<i class="iconfont">&#xe6aa;&nbsp;重建索引</i>
+				</span>
+				<span ng-if="projectDetail.type != 2 || projectDetail.luceneSearch != 1">
+					<i class="iconfont text-danger">&#xe69d;&nbsp;删除索引</i>
+				</span>
+            </a>
+
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
+			   ng-click="del('user/project/delete.do?id='+projectDetail.id,projectDetail.name);">
+				<i class="iconfont text-danger">&#xe69d;&nbsp;删除项目</i>
+			</a>
+
+            <div class="cb"></div>
+		</div>
+
+
+		<div class="fw500 f14 mt20">项目简介</div>
+		<div class="BGFFF C999 lh26 mt10">
+			<div class="light-bg p15" ng-bind="projectDetail.remark"></div>
+		</div>
+	</div>
+</div>
+<div class="cb"></div>
+

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="fontInit">
+<head>
+	<title ng-bind="settings.TITLE">CrapApi|接口管理系统</title>
+	<meta charset="UTF-8">
+	<link href="{{settings.ICON}}" rel="shortcut icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="shortcut" type="image/x-icon" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
+	<link href="resources/css/allCss.css?v=V8.2.0_0630" rel="stylesheet" type="text/css"/>
+</head>
+<body class="login-bg s-nav-bg-color">
+<div class="circular circular-1"></div>
+<div class="circular circular-2"></div>
+<div class="circular circular-3"></div>
+<div class="circular circular-4"></div>
+<div class="circular circular-5"></div>
+<div class="circular circular-6"></div>
+	<!-- <div class="trans abs"></div> -->
+	<!-- Top Nav
+	<div ng-include="'resources/html/subTpl/visitorTopNav.tpl.html?v=V8.2.0_0630'"></div>-->
+	<!-- Top Nav End -->	
+	
+	<div class="container">
+		<div class="row p0 m0 mt100 r5">
+			<div class="p50 panel panel-default r5 z10 login" ui-view="main"></div>
+		</div>
+	</div>
+	
+	<!-- JavaScript 放置在文档最后面可以使页面加载速度更快 -->
+	<!-- 可选: 包含 jQuery 库 -->
+
+	<script src="resources/framework/jquery-1.9.1.min.js"></script>
+	<!-- 加载顺序：必须在bootstrap前，否则tiptool不可用-->
+	<script src="resources/framework/jquery.cookie.js"></script>
+	<script src="resources/framework/jquery.base64.js"></script>
+
+	<script src="resources/framework/angular-1.3.0.14/angular.min.js"></script>
+	<script src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
+	<script src="resources/framework/angular-ui-router-0.2.15.js"></script>
+
+    <script src="resources/framework/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+	<script src="resources/js/allJs.js?v=V8.2.0_0630"></script>
+	
+	<!-- 提示窗口 -->
+	<div id="lookUp" class="look-up shadow">
+		<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
+		<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe69a;</i>
+	</div>
+	<div id="fade"></div>
+	
+	
+	<div id="float" class="folat">
+		<div class="sk-wave">
+			<div class="sk-rect sk-rect1"></div>
+			<div class="sk-rect sk-rect2"></div>
+			<div class="sk-rect sk-rect3"></div>
+			<div class="sk-rect sk-rect4"></div>
+			<div class="sk-rect sk-rect5"></div>
+		</div>
+	</div>
+    <div class="tip-div" id="tip-div"></div>
+
+</body>
+</html>

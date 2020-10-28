@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="userCtrl" ng-init="adminInit()">
+<head>
+	<meta charset="UTF-8">
+	<title ng-bind="settings.TITLE">CrapApi|应用接口管理系统</title>
+	<meta name="keywords" content="api,API管理,接口管理,API文档管理,API管理系统,API接口管理,API管理平台,接口管理平台,接口管理,开源接口管理,开源api接口管理,API接口管理,文档管理,接口文档,apimanager,API测试,API接口测试,开源java项目,java开源项目,API管理平台,API接口管理系统,接口管理工具,在线接口管理" />
+	<meta name="description" content="专业api接口管理系统，完全免费，JAVA开源接口管理系统，支持一键生成pdf、word接口文档、接口调试、项目协作、在线模拟数据、需求文档管理等。配合浏览器ApiDeubg接口调试插件，能实现本地接口调试及跨站调试。" />
+	<link href="{{settings.ICON}}" rel="shortcut icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="shortcut" type="image/x-icon" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<!-- <link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" /> -->
+	<link href="resources/css/allCss.css?v=V8.2.0_0630" rel="stylesheet" type="text/css"/>
+    <link href="resources/framework/editormd-1.5.0/css/editormd.min.css" rel="stylesheet" type="text/css" />
+    <link href="resources/framework/wang-editor-3.1.1/wangEditor.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<!-- Top -->
+    <!-- 是否安装了插件-->
+    <input type="hidden" id="hasInstallPlug" value="false">
+	<nav class="h50 fixed w t0 BGFFF z100 nav admin-nav">
+				<a class="navbar-brand fl main-bg" href="home.do" target="_blank">
+					<img ng-src="{{settings.MINI_LOGO}}" />
+				</a>
+
+                <div class="fl h50 lh50 pl20 pr20 C555 f14" >
+                    <span ng-if="$stateParams.projectName && $stateParams.projectName!='' && $stateParams.projectName!='undefined'">
+                        项目【<span ng-bind="$stateParams.projectName"></span> 】
+                    </span>
+                    <span ng-if="!$stateParams.projectName || $stateParams.projectName=='' || $stateParams.projectName=='undefined'" ng-bind="settings.TITLE"></span>
+                    <span ng-if="$stateParams.pageName">
+                        <i class="iconfont">&#xe6a7;</i>
+                        <span ng-bind="$stateParams.pageName"></span>
+                    </span>
+				</div>
+
+                <!-- 全局性不消失错误提示：如禁用了弹窗 -->
+                <button type="button" class="lh50 h50 break-word ndis" id="global-error"></button>
+                <div class="fl f16 lh50 h50 ndis" id="main-error" ng-if="hasError(error,'main-error')">
+                    <button type="button" class="btn btn-danger btn-xs break-word">
+                        <span ng-if="error.indexOf('CrapApi-400')>0">404-抱歉，地址有误，网页找不到了</span>
+                        <span onclick="propUpPasswordDiv(this)" ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
+                    </button>
+                </div>
+                <div class="f16 lh50 h50 fl ndis" id="tip-error" ng-if="isSupperAdmin() && hasError(errorTips,'tip-error')">
+                    <button type="button" class="btn btn-danger btn-xs break-word" ng-bind="errorTips"></button>
+                    <button type="button" class="btn btn-default btn-xs" ng-click="closeErrorTips()">删除提示</button>
+                </div>
+
+				<div class="m0 f14 fr">
+                    <a href="home.do" class="hover-main C555 h50 lh50 dis fr pl10 pr10 bl1" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a>
+                    <a href="#/profile?menu_a=menu-profile&pageName=个人资料" class="hover-main C555 h50 lh50 dis fr pl10 pr10" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe6b8;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a>
+
+                    <div class="pt7 p0 pb10 tr fr mr10" ng-controller="userCommonCtrl" ng-if="$stateParams.projectId">
+                        <input type="text" autocomplete="off" class="form-control input-xs dis-in-blo w200 r20 no-b-s"
+                               ng-keypress="search($event);"
+                               placeholder="输入后点击回车搜索"  ng-model="$stateParams.keyword">
+                    </div>
+				</div>
+	</nav>
+	<!-- End:Top -->
+	
+		<div class="row h p0 m0 mt50">
+				<!-- left -->
+				<div class="left-menu shadow">
+                    <div class="w250 fl h BGFFF main-color">
+                        <a ng-href="{{'my-project'|getUrl}}"
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-project']">
+                            <i class="iconfont f18 mr20 mt-3">&#xe6b4;</i>
+                            <span class="f14"> 项目管理</span>
+                        </a>
+
+                        <a ng-href="{{'profile'|getUrl}}"
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-profile']"
+                           ng-click="profile(sessionAdminId)">
+                            <i class="iconfont f18 mr20 mt-3">&#xe6b8;</i>
+                            <span class="f14"> 个人资料</span>
+                        </a>
+
+                        <a target="_self" href="#/admin/user/list?menu_a=menu_user&pageName=用户管理"
+                           ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_a == 'menu_user']"
+                           ng-if="isAdmin(null,'USER')">
+                            <i class="iconfont f18 mr20 mt-3">&#xe60c;</i>
+                            <span class="f14"> 用户管理</span>
+                        </a>
+
+                        <!-- 管理员菜单 -->
+                        <a href="#/admin/menu/list?parentId=0&menu_a=menu-menu&menuName=无&pageName=菜单管理"
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-menu']"
+                           ng-if="isAdmin(null,'MENU')">
+                            <i class="iconfont f18 mr20 mt-3">&#xe699;</i>
+                            <span class="f14"> 菜单管理</span>
+                        </a>
+
+                        <a href="#/admin/setting/list?menu_a=menu-setting&menu_b=menu-setting&pageName=系统设置"
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-setting']"
+                           ng-if="isAdmin(null,'SETTING')">
+                            <i class="iconfont f18 mr20 mt-3">&#xe6ae;</i>
+                            <span class="f14"> 系统设置</span>
+                        </a>
+
+                        <a target="_self" href="#/admin/hotSearch/list?menu_a=menu_hot&pageName=热搜管理"
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu_hot']"
+                           ng-if="isAdmin(null,'HOT_SEARCH')">
+                            <i class="iconfont f18 mr20 mt-3">&#xe82c;</i>
+                            <span class="f14"> 热搜管理</span>
+                        </a>
+
+                        <a href="#/user/introduce?menu_a=menu-info&menu_b=menu-introduce&pageName=系统简介"
+						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-info']">
+                            <i class="iconfont f18 mr20 mt-3">&#xe6a4;</i>
+                            <span class="f14"> 其他信息</span>
+                        </a>
+                    </div>
+			</div>
+			<div ui-view="subMenu" class="h fixed"></div>
+			<!-- End:left -->
+
+			<!-- main -->
+			<div class="p0 h mah ofy-a l250 fixed r0 " id="main">
+                <div ui-view="main" class="min-w700 pb50"></div>
+			</div>
+			<!-- end:main -->
+		</div>
+	<script src="resources/framework/jquery-1.9.1.min.js"></script>
+    <!-- 加载顺序：必须在bootstrap前，否则tiptool不可用-->
+    <script src="resources/framework/jquery-ui.min-1.10.4.js"></script>
+    <script src="resources/framework/jquery.cookie.js"></script>
+	<script src="resources/framework/jquery.base64.js"></script>
+
+	<script src="resources/framework/angular-1.3.0.14/angular.min.js"></script>
+	<script src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
+	<script src="resources/framework/angular-ui-router-0.2.15.js"></script>
+	
+	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+	<!--<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.zh-CN.js"></script> -->
+    <script src="resources/framework/editormd-1.5.0/editormd.min.js" charset="utf-8" ></script>
+    <script src="resources/framework/wang-editor-3.1.1/wangEditor.min.js" charset="utf-8" ></script>
+    <script src="resources/js/allJs.js?v=V8.2.0_0630"></script>
+
+
+	<!-- 提示窗口 -->
+<div id="lookUp" class="look-up shadow">
+	<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
+	<div id="pickTip"></div>
+	<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe69a;</i>
+</div>
+
+<div id="fade"></div>
+<div id="myDialog" class="look-up pt50">
+		<div id="myDialog-title" class="CFFF f20 fw500 main-bg h50 lh50 pl20 mt-50">
+		</div>
+		<div id="myDialogContent" class="look-up-content b0 f12 tl p10 BGFFF">
+			<button type="button" class="btn btn-danger btn-xs break-word ml10 mb10 ndis" id="dialog-error" ng-if="hasError(error,'dialog-error')">
+					<span class="glyphicon glyphicon-remove"></span>
+					<span ng-bind="error"></span>
+			</button>
+			<div ui-view="detail"></div>
+		</div>
+		<i class="iconfont i-close CFFF f18 fb mt-1" onclick="closeMyDialog('myDialog', 'myDialogContent')">&#xe69a;</i>
+		<i class="iconfont i-full CFFF f14" onclick="fullMyDialog('myDialog', 'myDialogContent')">&#xe62e;</i>
+</div>   
+<div class="tip-div" id="tip-div"></div>
+<div id="float" class="folat">
+		<div class="sk-wave">
+        <div class="sk-rect sk-rect1"></div>
+        <div class="sk-rect sk-rect2"></div>
+        <div class="sk-rect sk-rect3"></div>
+        <div class="sk-rect sk-rect4"></div>
+        <div class="sk-rect sk-rect5"></div>
+      </div>
+</div>
+</body>
+</html>

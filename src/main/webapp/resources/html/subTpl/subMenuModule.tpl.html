@@ -1,0 +1,84 @@
+<div class="w200 fl h BGFFF f14 ofy-s pb100 fixed l50 main-bl-1" ng-init="initProjectDetail()">
+    <div class="shadow">
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_main']"
+            style="border-bottom: 1px solid #eeeeee; height: 50px; line-height: 50px; border-left: 1px solid #eeeeee;"
+            ng-href="#/user/project?pageName=项目详情&dataType=interface&menu_a=menu-project&menu_b=menu_main&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+            <i class="iconfont mt-3 mr5">&#xe87b;</i>
+            <span class="f14">项目详情</span>
+        </a>
+        <!-- TODO user/article/list?menu_a=menu-project&projectName=测试项目233&projectId=152845935636107000002&type=ARTICLE-->
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_error']"
+           ng-href="#/user/error/list?pageName=状态码&dataType=error&menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+            <i class="iconfont mt-3 mr5">&#xe6b7;</i>
+            <span class="f14">状态码</span>
+        </a>
+
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_user']"
+           ng-if="isProjectUser('myData')"
+           ng-href="#/user/projectUser/list?pageName=项目成员&menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+            <i class="iconfont mt-3 mr5">&#xe6b8;</i>
+            <span class="f14">项目成员</span>
+        </a>
+
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_module']"
+           ng-href="#/user/module/list?pageName=模块&dataType=module&menu_a=menu-project&menu_b=menu_module&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+            <i class="iconfont mt-3 mr5">&#xe83b;</i>
+            <span class="f14">模块</span>
+        </a>
+
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_interface']"
+           ng-href="#/user/interface/list?pageName=接口&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+            <i class="iconfont mt-3 mr5 C999 ml10">&#xe648;</i>
+            <span class="f13">接口</span>
+        </a>
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_article']"
+           ng-href="#/user/article/list?pageName=文档&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+            <i class="iconfont mt-3 mr5 C999 ml10">&#xe6a2;</i>
+            <span class="f13">文档</span>
+        </a>
+
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_dictionary']"
+           ng-href="#/user/dictionary/list?pageName=数据库表&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+            <i class="iconfont mt-3 mr5 C999 ml10">&#xe70c;</i>
+            <span class="f13">数据库表</span>
+        </a>
+
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_bug']"
+           ng-href="#/user/bug/list?pageName=缺陷管理&dataType=bug&menu_a=menu-project&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+            <i class="iconfont mt-3 mr5 C999 ml10">&#xe748;</i>
+            <span class="f13">缺陷管理</span>
+        </a>
+
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_source']"
+           ng-href="#/user/source/list?pageName=文件&dataType=source&menu_a=menu-project&menu_b=menu_source&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+            <i class="iconfont mt-3 mr5 C999 ml10">&#xe6c0;</i>
+            <span class="f13">文件</span>
+        </a>
+    </div>
+
+
+    <div class="shadow" ng-init="queryTop50Module()"
+         ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'bug' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary' || $stateParams.dataType == 'source'">
+        <a class="menu_b lh40 fw500 h40 f14 pl10 BGF5 C555 mt-1 main-bb-1 C000 fw500" ng-if="top50Module.length>0"
+           ng-href="#/user/{{$stateParams.dataType}}/list?pageName=所有模块&dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+            <i class="iconfont mt-3 main-color f16">&#xe83b;&nbsp;&nbsp;</i>所有模块</a>
+
+        <!-- 选中的排最前 -->
+        <a ng-repeat="item in top50Module"
+           ng-if="$stateParams.moduleId == item.id"
+           class="menu_b hover-main active-main C999 f13"
+           ng-href="#/user/{{$stateParams.dataType}}/list?pageName={{$stateParams.pageName}}&dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&projectId={{item.projectId}}&projectName={{item.projectName}}"
+           ng-bind="item.name"></a>
+
+        <a ng-repeat="item in top50Module"
+           ng-if="$stateParams.moduleId != item.id"
+           class="menu_b hover-main C999 f13"
+           ng-href="#/user/{{$stateParams.dataType}}/list?pageName={{$stateParams.pageName}}&dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&moduleId={{item.id}}&projectId={{item.projectId}}&projectName={{item.projectName}}"
+           ng-bind="item.name"></a>
+
+        <a ng-if="top50Module.length==0" class="menu_b hover-main C999 f12">
+            尚未创建模块 ^_^
+        </a>
+    </div>
+
+</div>

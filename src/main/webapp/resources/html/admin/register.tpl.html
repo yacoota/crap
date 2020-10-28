@@ -1,0 +1,36 @@
+
+					<blockquote>
+  						<span class="pl10 C000 f18 fw500">注册</span>
+					</blockquote>
+					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
+					<form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('user/register.do', registerSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('user/preRegister.do')">
+						<div class="input-wrapper ">
+							    <input type="email" ng-model="model.email" placeholder="邮箱"  required>
+						</div>
+						<div class="input-wrapper">
+								<input type="text" autocomplete="off" onfocus="this.type='password'" ng-model="model.password" placeholder="密码（不少于6位）"  required>
+						</div>
+						<div class="input-wrapper">
+								<input type="text" autocomplete="off" onfocus="this.type='password'" ng-model="model.rpassword" placeholder="确认密码"  required>
+						</div>
+						<div class="input-wrapper" ng-if="settings.VERIFICATIONCODE=='true'">
+								<input type="text" autocomplete="off" ng-model="model.verificationCode"   placeholder="图形验证码" required>
+								
+								<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张" data-toggle="tooltip">
+									<img id="imgCode" width="80" height="30" onclick="changeimg('imgCode','verificationCode')"
+  									 src="getImgCode.do">
+								</div>
+						</div>
+						<div class="form-group mt30 mb30">
+							<button type="submit" class="btn btn-block btn-main r5 ">注册<i class='iconfont mt-1 pl10'>&#xe601;</i></button>
+						</div>
+						
+						<div class="form-group mb0 f12 C555 tr">
+							<div class="fl lab">
+								<a href="/" class="cursor">回首页</a>
+							</div>
+							<div class="fl lab ml20"><a href="#/login" class="cursor">登录 →</a></div>
+						</div>
+					</form>
+					<div class="text-error mb15 mt10" id="main-error" ng-if="hasError(error,'main-error')" ng-bind="error"></div>
+					

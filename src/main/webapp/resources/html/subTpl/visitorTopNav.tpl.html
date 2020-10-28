@@ -1,0 +1,45 @@
+<nav class="navbar navbar-inverse no-radius s-nav-bg-color s-nav-color mb0 z10">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+
+				<a href="/home.do" class="no_unl">
+					<i class="iconfont adorn-color f30">&#xe612;</i>
+					<span class="CFFF f14" style="font-family: Times New Roman">CRAP-API</span>
+				</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse p0">
+				<ul class="nav navbar-nav navbar-right ml20">
+	               	<!--<li>
+	                	<a ng-href="index.do#/project/list?projectShowType=4" class="visitor_top_menu ng-binding" onclick="selectButton(this,'visitor_top_menu')">推荐项目</a>
+	                </li> -->
+	                <li ng-if="sessionAdminName!=''">
+	                	<a ng-href="index.do#/project/list?projectShowType=3" class="visitor_top_menu ng-binding" onclick="selectButton(this,'visitor_top_menu')">我的项目</a>
+	                </li>
+	                
+					<li ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">
+	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName" class="visitor_top_menu" onclick="selectButton(this,'visitor_top_menu')"></a>
+	                </li>
+	                
+	                <li class="dropdown" ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length>0">
+	                	 <a href="javascript:void(0)" class="dropdown-toggle visitor_top_menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="selectButton(this,'visitor_top_menu')">
+	                	 <span ng-bind="item.menu.menuName"></span> <span class="caret"></span></a>
+	                 	 <ul class="dropdown-menu">
+	                    	<li ng-repeat="subItem in item.subMenu">
+	                    		<a ng-href="{{subItem.menuUrl}}" ng-bind="subItem.menuName"></a>
+	                    	</li>
+	                  </ul>
+	                </li>
+					<li ng-if="sessionAdminName==''"><a href="loginOrRegister.do#/login"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
+					<li ng-if="sessionAdminName!=''"><a href="admin.do" target="_blank"><i class="iconfont f14 mt-5">&#xe6b8;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
+					<li ng-if="sessionAdminName!=''"><a href="home.do" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
