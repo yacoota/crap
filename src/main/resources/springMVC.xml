@@ -19,7 +19,9 @@
 	<!--注解扫描范围 -->
 	<context:annotation-config />
 	<mvc:annotation-driven/>
-	<aop:aspectj-autoproxy proxy-target-class="true"/> 
+    <mvc:default-servlet-handler/>
+    <mvc:resources location="classpath:/resources/" mapping="/resources/**"/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 	<!-- 采用注解的方式配置，在部分操作系统或tomcat中由于初始化顺序不一致，会报错 -->
 	<!-- 必须放在component-scan之上，优先创建该bean -->
 	<bean class="cn.crap.framework.SpringContextHolder" />
@@ -29,13 +31,13 @@
 	<!-- <import resource="mongo.xml" /> -->
 	<import resource="mybatis-dao.xml" />
 	
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
+<!--	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
 			<value>classpath:config.properties</value>
 		</property>
 		<property name="fileEncoding" value="utf-8"/>
 	</bean>
-
 	
 	<mvc:interceptors>
 		<!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 -->
@@ -67,9 +69,9 @@
 	</bean>
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/"></property>
-		<!-- <property name="suffix" value=".jsp"></property> -->
-	</bean> 
+        <property name="prefix" value="/"></property>
+        <!--	<property name="suffix" value=".jsp"></property>-->
+    </bean>
 
  	<!-- 支持上传文件 -->  
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>

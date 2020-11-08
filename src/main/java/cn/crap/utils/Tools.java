@@ -311,7 +311,8 @@ public class Tools {
     }
 
     public static String getServicePath() {
-        String path = Tools.class.getClassLoader().getResource("").getPath().replace("WEB-INF/classes/", "");;
+        // String path = Tools.class.getClassLoader().getResource("").getPath().replace("WEB-INF/classes/", "");
+        String path = Tools.class.getClassLoader().getResource("").getPath().replace("WEB-INF/classes/", "").replace("/classes/", "/resources");
         return path.endsWith("/") ? path : path + "/";
     }
 

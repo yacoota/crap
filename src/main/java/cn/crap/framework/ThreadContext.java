@@ -2,9 +2,12 @@ package cn.crap.framework;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -12,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@WebFilter(filterName = "testFilter", urlPatterns = {"*.do", "*.json", "*.htm", "/"})
+@Component
 public class ThreadContext implements Filter {
 
     protected Logger log = Logger.getLogger(getClass());
@@ -78,6 +83,7 @@ public class ThreadContext implements Filter {
 
     /**
      * 判断地址是否是需要忽略的
+     *
      * @param request
      * @return
      */
@@ -102,7 +108,7 @@ public class ThreadContext implements Filter {
     }
 
     public static HttpServletRequest request() {
-        if (THREAD_OBJECT.get() == null){
+        if (THREAD_OBJECT.get() == null) {
             return null;
         }
         return THREAD_OBJECT.get().request;
@@ -112,12 +118,12 @@ public class ThreadContext implements Filter {
         THREAD_OBJECT.set(new ThreadObject(request, response));
     }
 
-    public static void clear(){
+    public static void clear() {
         THREAD_OBJECT.set(null);
     }
 
     public static HttpServletResponse response() {
-        if (THREAD_OBJECT.get() == null){
+        if (THREAD_OBJECT.get() == null) {
             return null;
         }
         return THREAD_OBJECT.get().response;

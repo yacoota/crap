@@ -19,7 +19,7 @@ public class WordUtils {
     private static final String templateFolder = WordUtils.class.getResource("/").getPath();
 
     static {
-        configuration = new Configuration(Configuration.VERSION_2_3_28);
+        configuration = new Configuration(Configuration.VERSION_2_3_29);
         configuration.setDefaultEncoding("utf-8");
         try {
             configuration.setDirectoryForTemplateLoading(new File(templateFolder));

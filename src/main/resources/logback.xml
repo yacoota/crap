@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false" packagingData="true">
+    <!-- 项目名称 -->
+    <contextName>Crap Platform</contextName>
+
+    <property name="USER_HOME" value="./logs/crap"/>
+
+    <!-- ConsoleApperder意思是从console中打印出来 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 阈值过滤，就是log行为级别过滤，debug及debug以上的信息会被打印出来 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <encoder>
+            <!-- pattern模式 %d时间 %thread 线程名 %level行为级别 %logger logger名称 %method 方法名称 %message 调用方法的入参消息 -->
+            <pattern>%-4d [%thread] %-5level %logger.%method - %message%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="java.sql" level="DEBUG" additivity="true">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="freemarker" level="INFO" additivity="false"/>
+    <logger name="com.atomikos" level="INFO" additivity="false"/>
+    <logger name="org.apache" level="INFO" additivity="false"/>
+    <logger name="org.hibernate" level="INFO" additivity="false"/>
+    <logger name="org.eclipse.jetty" level="INFO" additivity="false"/>
+    <logger name="org.apache.kafka" level="INFO" additivity="false"/>
+    <logger name="org.apache.jasper.compiler" level="FINE" additivity="false"/>
+    <logger name="org.mybatis.spring" level="DEBUG" additivity="false"/>
+
+    <logger name="org.springframework.security.web" level="INFO" additivity="false"/>
+    <logger name="org.springframework.context.annotation" level="DEBUG" additivity="false"/>
+    <logger name="org.springframework.beans.factory.xml" level="DEBUG" additivity="false"/>
+    <logger name="org.springframework.beans.factory.support" level="DEBUG" additivity="false"/>
+    <logger name="org.springframework.web.servlet.mvc.method" level="DEBUG" additivity="false"/>
+    <logger name="org.springframework.boot.autoconfigure.logging" level="INFO" additivity="false"/>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

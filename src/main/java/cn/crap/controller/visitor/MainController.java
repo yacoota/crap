@@ -76,6 +76,11 @@ public class MainController extends BaseController{
 			return dashboard(modelMap);
 		}
 	}
+
+    @RequestMapping(value = {"","/"})
+    public void index(HttpServletResponse response) throws Exception {
+        response.sendRedirect("/home.do");
+    }
 	
 	/**
 	 * 前端主页面
