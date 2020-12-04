@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,8 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@WebFilter(filterName = "testFilter", urlPatterns = {"*.do", "*.json", "*.htm", "/"})
-@Component
+@WebFilter(filterName = "ThreadContext", urlPatterns = {"*.do", "*.json", "*.htm", "/"}, initParams = {
+        @WebInitParam(name = "ignoreSuffixes", value = ".jpg,.png,.html,.js,.css,.jpeg,.doc,.pdf,.ignore"),
+})
 public class ThreadContext implements Filter {
 
     protected Logger log = Logger.getLogger(getClass());

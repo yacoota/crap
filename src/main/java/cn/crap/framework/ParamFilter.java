@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 过滤无效参数内容
  */
-@WebFilter(filterName = "testFilter", urlPatterns = {"*.do", "*.json", "*.htm"})
+@WebFilter(filterName = "paramFilter", urlPatterns = {"*.do", "*.json", "*.htm"})
 @Component
 public class ParamFilter extends OncePerRequestFilter {
     private static String IGNORE_PARAM_PRE = "crShow";

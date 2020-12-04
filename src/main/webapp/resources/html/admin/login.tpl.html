@@ -5,10 +5,10 @@
 <input type="hidden" value="[ERROR][LOGINPAGE]" />
 <form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('user/login.do', loginSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('user/preLogin.do')">
     <div class="input-wrapper">
-		<input type="text" autocomplete="off" ng-model="model.userName" placeholder="用户名（6-20位）" required name="userName"/>
+		<input type="text" autocomplete="off" ng-model="model.userName" placeholder="用户名（6-20位）" required name="userName" value="admin"/>
 	</div>
 	<div class="input-wrapper">
-		<input type="text" autocomplete="off" id="login-password" ng-model="model.password" name="password" placeholder="密码（不少于6位）" required/>
+		<input type="text" autocomplete="off" id="login-password" ng-model="model.password" name="password" placeholder="密码（不少于6位）" required value="123456"/>
 	</div>
 	<div class="input-wrapper"
 		ng-if="settings.VERIFICATIONCODE=='true' && settings.LOGIN_VERIFICATION_CODE=='true'">
