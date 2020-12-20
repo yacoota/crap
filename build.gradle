@@ -1,4 +1,5 @@
 //  https://gitee.com/CrapApi/CrapApi.git
+
 plugins {
     id 'java'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
